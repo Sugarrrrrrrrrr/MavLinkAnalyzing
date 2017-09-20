@@ -22,7 +22,7 @@ alignment.vert = 1
 
 patternDOWN = xlwt.Pattern()
 patternDOWN.pattern = 1
-patternDOWN.pattern_fore_colour = 50
+patternDOWN.pattern_fore_colour = 26
 styleDOWN = xlwt.XFStyle()
 styleDOWN.pattern = patternDOWN
 styleDOWN.borders = borders
@@ -30,7 +30,7 @@ styleDOWN.alignment = alignment
 
 patternUP = xlwt.Pattern()
 patternUP.pattern = 1
-patternUP.pattern_fore_colour = 41
+patternUP.pattern_fore_colour = 27
 styleUP = xlwt.XFStyle()
 styleUP.pattern = patternUP
 styleUP.borders = borders
