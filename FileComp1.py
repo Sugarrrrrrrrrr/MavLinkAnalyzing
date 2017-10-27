@@ -1,5 +1,8 @@
-import json
+# _debug1 原debug 20171021 1559
+# _Wireshark1 原Wireshark 20171021 1559.pcapng中UDP包导出的json文件
+# 运行后结果记录在 1.txt 中
 
+import json
 
 class DebugFile:
     def __init__(self, file_name):
@@ -34,21 +37,21 @@ class WireSharkFile:
 
                             # type
                             if jsons[i]['_source']['layers']['ip']['ip.src_host'] == '10.1.10.3':
-                                type = 'to'
+                                data_type = 'to'
                             elif jsons[i]['_source']['layers']['ip']['ip.src_host'] == '192.168.1.3':
-                                type = 'from'
+                                data_type = 'from'
                             else:
-                                type = 'none'
+                                data_type = 'none'
 
                             if 'udp' in jsons[i]['_source']['layers']:
                                 if 'data' in jsons[i]['_source']['layers']:
                                     if 'data.data' in jsons[i]['_source']['layers']['data']:
-                                        list = jsons[i]['_source']['layers']['data']['data.data'].split(':')
+                                        data_list = jsons[i]['_source']['layers']['data']['data.data'].split(':')
                                     else:
                                         print('----- no data.data -----')
                                 else:
-                                    list = ['NULL']
-                                    print('----- no data -----')
+                                    data_list = ['NULL']
+                                    # print('----- no data -----')
                             else:
                                 print('----- no udp -----')
                         else:
@@ -58,7 +61,7 @@ class WireSharkFile:
                 else:
                     print('----- no _source -----')
 
-                self.w_list.append((type, list))
+                self.w_list.append((data_type, data_list))
 
 
 def comp(d, w):
@@ -77,31 +80,80 @@ def comp(d, w):
                     flag = False
     return flag
 
-if __name__ == "__main__":
-    n = 1
+
+def _to(n):
     df = DebugFile('_debug%d' % n)
     wf = WireSharkFile('_Wireshark%d' % n)
 
-    i = 0
-    j = 0
-    while i<len(df.d_list) and j<len(wf.w_list):
-        if comp(df.d_list[i], wf.w_list[j]):
-            print(df.d_list[i])
-            print(wf.w_list[j])
-            print('----------')
-        else:
-            print(df.d_list[i])
-            print(wf.w_list[j])
-            print('!!!!! Warning')
-            if df.d_list[i][0] == wf.w_list[j][0]:
-                print(df.d_list[i][0])
-            else:
-                print(df.d_list[i][0])
-                print(wf.w_list[j][0])
-            print('-----type')
-            input()
+    lost_list = []
+    n_to = 0
+    for i in range(len(df.d_list)):
+        if df.d_list[i][0] == 'to':
+            n_to += 1
+        f = False
+        for j in range(len(wf.w_list)):
+            if comp(df.d_list[i], wf.w_list[j]):
+                f = True
+                wf.w_list.pop(j)
+                break
+        if not f:
+            lost_list.append((i, df.d_list[i]))
+            # print(i, df.d_list[i])
 
-            #input()
+    return n_to, lost_list
 
-        i += 1
-        j += 1
+
+def _from(n):
+    df = DebugFile('_debug%d' % n)
+    wf = WireSharkFile('_Wireshark%d' % n)
+
+    lost_list = []
+    n_from = 0
+    for i in range(len(wf.w_list)):
+        if wf.w_list[i][0] == 'from':
+            n_from += 1
+        f = False
+        for j in range(len(df.d_list)):
+            if comp(wf.w_list[i], df.d_list[j]):
+                f = True
+                df.d_list.pop(j)
+                break
+        if not f:
+            lost_list.append((i, wf.w_list[i]))
+            # print(j, wf.w_list[i])
+
+    return n_from, lost_list
+
+
+if __name__ == "__main__":
+    n = 3
+    n_to, to_lost_list = _to(n)
+    n_from, from_lost_list = _from(n)
+
+    with open('%d.txt'% n, 'w') as file:
+        file.write('''%d UDP to 192.168.1.3 in debug
+%d lost in wireshark
+
+%d UDP from 192.168.1.3 in wireshark
+%d lost in debug
+
+------------------------------
+''' % (n_to, len(to_lost_list), n_from, len(from_lost_list)))
+
+        file.write('to 192.168.1.3 lost list:')
+        file.write('\n\n')
+        for item in to_lost_list:
+            file.write('%d UDP from debug' % item[0])
+            file.write('\n')
+            file.write(str(item[1]))
+            file.write('\n\n')
+
+        file.write('from 192.168.1.3 lost list:')
+        file.write('\n\n')
+        for item in from_lost_list:
+            file.write('%d UDP from wireshare' % item[0])
+            file.write('\n')
+            file.write(str(item[1]))
+            file.write('\n')
+            file.write('\n\n')
+
