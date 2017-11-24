@@ -130,11 +130,14 @@ def _from(n, uav_ip, groundstation_ip, to_str, from_str):
 
 
 def main():
-    n = 1001
+
+# --------------------------------------------------#
+    n = 30107
     uav_ip = '192.168.1.254'
-    groundstation_ip = '192.168.1.4'
+    groundstation_ip = '192.168.1.7'
     to_str = 'to'
     from_str = 'from'
+# --------------------------------------------------#
     
     
     n_to, to_lost_list = _to(n, uav_ip, groundstation_ip, to_str, from_str)
