@@ -1,2 +1,5 @@
 /__pycache__/
 /*.xls
+/*.pcap
+/*.txt
+/QGC

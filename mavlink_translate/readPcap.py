@@ -11,9 +11,11 @@ if __name__ == '__main__':
                 sys.path.append(line)
                 from parse import mavutil
 
-    mf = mavutil.mavlink_connection('waypoints_201712261521.pcap', ip_list=['192.168.4.1'])
+    file_name = 'Wireshar1'
+
+    mf = mavutil.mavlink_connection(file_name + '.pcap', ip_list=['192.168.1.7'])
     
-    file = open('MAVLink_20170908_1636.txt')
+
     xls = xlwt.Workbook()
     sheet = xls.add_sheet('sample')
 
@@ -47,12 +49,17 @@ if __name__ == '__main__':
     styleUP.borders = borders
     styleUP.alignment = alignment
 
+    styleUNKNOW = xlwt.Pattern()
+
     index = 0
     m = mf.recv_msg()
     for i in range(100000):
         
         if m.get_type() == 'BAD_DATA':
-            m = mf.recv_msg()
+            try:
+                m = mf.recv_msg()
+            except Exception as e:
+                print(e)
             continue
 
         print('【%4d】:' % i, '【%4d】' % m.get_srcSystem(), m)
@@ -63,8 +70,8 @@ if __name__ == '__main__':
         elif m.get_srcSystem() == 255:
             direction = 'UP'
         else:
-            input('unknow srcSystem:%d' % m.get_srcSystem())
-            break
+            # print('unknow srcSystem:%d' % m.get_srcSystem())
+            direction = 'UNKNOW'
 
         messageID = m.get_msgId()
         description = str(m)
@@ -75,7 +82,8 @@ if __name__ == '__main__':
         elif direction == 'UP': 
             style = styleUP
         else:
-            input('unknow srcSystem:%d'% m.get_srcSystem())
+            # input('unknow srcSystem:%d'% m.get_srcSystem())
+            style = styleUNKNOW
 
 
         row = index
@@ -106,4 +114,4 @@ if __name__ == '__main__':
     print('index:', index)
     input()
 
-    xls.save('waypoints_201712261521.xls')
+    xls.save(file_name + '.xls')

@@ -132,7 +132,7 @@ def _from(n, uav_ip, groundstation_ip, to_str, from_str):
 def main():
 
 # --------------------------------------------------#
-    n = 30107
+    n = 122802
     uav_ip = '192.168.1.254'
     groundstation_ip = '192.168.1.7'
     to_str = 'to'
