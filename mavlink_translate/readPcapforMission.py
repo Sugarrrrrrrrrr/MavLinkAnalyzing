@@ -11,7 +11,7 @@ if __name__ == '__main__':
                 sys.path.append(line)
                 from parse import mavutil
 
-    file_name = 'mission_message_20171229_02'
+    file_name = 'waypoints_201712261521'
 
     mf = mavutil.mavlink_connection(file_name + '.pcap', ip_list=['192.168.4.1'])
     
@@ -53,13 +53,15 @@ if __name__ == '__main__':
 
     index = 0
     m = mf.recv_msg()
+    msg_ids = [x for x in range(39, 48)]
     for i in range(100000):
         
-        if m.get_type() == 'BAD_DATA':
+        if not m.get_msgId() in msg_ids:
             try:
                 m = mf.recv_msg()
             except Exception as e:
                 print(e)
+                break
             continue
 
         print('【%4d】:' % i, '【%4d】' % m.get_srcSystem(), m)
@@ -114,4 +116,4 @@ if __name__ == '__main__':
     print('index:', index)
     input()
 
-    xls.save(file_name + '.xls')
+    xls.save(file_name + '_forMission.xls')
