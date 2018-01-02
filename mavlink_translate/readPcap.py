@@ -11,7 +11,7 @@ if __name__ == '__main__':
                 sys.path.append(line)
                 from parse import mavutil
 
-    file_name = 'mission_message_20171229_04'
+    file_name = 'mission_message_20180102_03'
 
     mf = mavutil.mavlink_connection(file_name + '.pcap', ip_list=['192.168.4.1'])
     
