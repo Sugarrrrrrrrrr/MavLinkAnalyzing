@@ -21,7 +21,11 @@ if __name__ == '__main__':
                 line = f.readline().strip()     # type: str
                 IP = line
 
-    mf = mavutil.mavlink_connection(file_name + '.pcap', ip_list=[IP])
+            if line.startswith('<port>'):
+                line = f.readline().strip()     # type: str
+                port = line
+
+    mf = mavutil.mavlink_connection(file_name + '.pcap', ip_list=[IP], port=eval(port))
 
     xls = xlwt.Workbook()
     sheet = xls.add_sheet('sample')
