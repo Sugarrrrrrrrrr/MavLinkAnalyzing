@@ -13,7 +13,7 @@
     </head>
     <body>
         <div id="map"></div>
-        <script src="./l.js"></script>
+        <script src="./2-5.js"></script>
         <script>
             var map;
 
@@ -50,7 +50,8 @@
                     path: l1
                 };
                 polyline1 = new google.maps.Polyline(polyOptions1);
-                map.setCenter(l1[0]);
+                if(l1.length > 0)
+                    map.setCenter(l1[0]);
 
                 var polyOptions2 = {
                     strokeColor: 'blue',
@@ -60,8 +61,20 @@
                     path: l2
                 };
                 polyline2 = new google.maps.Polyline(polyOptions2);
+                if(l2.length > 0)
+                    map.setCenter(l2[0]);
 
-                map.setCenter(l2[0]);
+                var polyOptions3 = {
+                    strokeColor: 'green',
+                    // strokeOpacity: 1.0,
+                    // strokeWeight: 3,
+                    map: map,
+                    path: l3
+                };
+                polyline3 = new google.maps.Polyline(polyOptions3);
+                if(l3.length > 0)
+                    map.setCenter(l3[0]);
+
             }
             
             function fitBounds() {
