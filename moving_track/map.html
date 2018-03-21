@@ -8,12 +8,91 @@
                 height: 800px;
                 width: 100%;
             }
+            *{
+                margin: 0;
+                padding: 0;
+            }
+            .scroll{
+                margin:100px;
+                width: 500px;
+                height: 5px;
+                background: #ccc;
+                position: relative;
+            }
+            .bar{
+                width: 10px;
+                height: 20px;
+                background: #369;
+                position: absolute;
+                top: -7px;
+                left: 0;
+                cursor: pointer;
+            }
+            .mask{
+                position: absolute;
+                left: 0;
+                top: 0;
+                background: #369;
+                width: 0;
+                height: 5px;
+            }
+            #rop{
+                position: absolute;
+                left: 510px;
+                top: -8px;
+            }
+            #btn_start{
+                position: absolute;
+                left: 560px;
+                top: -8px;
+            }
         </style>
         <script src="./qwebchannel.js"></script>
     </head>
     <body>
+
         <div id="map"></div>
+        <div class="scroll" id="scroll">
+            <div class="bar" id="bar"></div>
+            <div class="mask" id="mask"></div>
+            <p id="rop"></p>
+            <button id="btn_start" onclick="timer = window.setInterval('go()',50);">Start</button>
+        </div>
+
+
         <script src="./2-5.js"></script>
+        <script>
+                var scroll = document.getElementById('scroll');
+                var bar = document.getElementById('bar');
+                var mask = document.getElementById('mask');
+                var ptxt = document.getElementById('rop');
+                var barleft = 0;
+                bar.onmousedown = function(event){
+                      var event = event || window.event;
+                      var leftVal = event.clientX - this.offsetLeft;
+                      var that = this;
+                       // 拖动一定写到 down 里面才可以
+                      document.onmousemove = function(event){
+                            var event = event || window.event;
+                            barleft = event.clientX - leftVal;
+                            if(barleft < 0)
+                                barleft = 0;
+                            else if(barleft > scroll.offsetWidth - bar.offsetWidth)
+                                barleft = scroll.offsetWidth - bar.offsetWidth;
+                            mask.style.width = barleft +'px' ;
+                            that.style.left = barleft + "px";
+                            var rop = parseInt(barleft/(scroll.offsetWidth-bar.offsetWidth) * 100);
+                            ptxt.innerHTML = rop + "%";
+                            drawPolylines(rop);
+
+                            //防止选择内容--当拖动鼠标过快时候，弹起鼠标，bar也会移动，修复bug
+                            window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty();
+                      }
+                };
+                document.onmouseup = function(){
+                    document.onmousemove = null; //弹起鼠标不做任何操作
+                }
+        </script>
         <script>
             var map;
 
@@ -47,36 +126,64 @@
                     // strokeOpacity: 1.0,
                     // strokeWeight: 3,
                     map: map,
-                    path: l1
                 };
                 polyline1 = new google.maps.Polyline(polyOptions1);
-                if(l1.length > 0)
-                    map.setCenter(l1[0]);
 
                 var polyOptions2 = {
                     strokeColor: 'blue',
                     // strokeOpacity: 1.0,
                     // strokeWeight: 3,
                     map: map,
-                    path: l2
                 };
                 polyline2 = new google.maps.Polyline(polyOptions2);
-                if(l2.length > 0)
-                    map.setCenter(l2[0]);
 
                 var polyOptions3 = {
                     strokeColor: 'green',
                     // strokeOpacity: 1.0,
                     // strokeWeight: 3,
                     map: map,
-                    path: l3
                 };
                 polyline3 = new google.maps.Polyline(polyOptions3);
-                if(l3.length > 0)
-                    map.setCenter(l3[0]);
+
+                map.setCenter({lat: 22.77121004112888, lng: 113.47471508545004});
+                map.setZoom(19);
+
+                window.timer = window.setInterval("go()",50); //设置定时器
 
             }
+
+            function go(){
+                var rop =  parseInt(bar.offsetLeft / (scroll.offsetWidth - bar.offsetWidth) * 100 + 0.5) + 1;
+                if(rop > 100)
+                    return;
+                barleft = rop * (scroll.offsetWidth - bar.offsetWidth) /100;
+                mask.style.width = barleft + 'px';
+                bar.style.left = barleft + 'px';
+                ptxt.innerHTML = rop + "%";
+                drawPolylines(rop);
+                if(rop >= 100){
+                    window.clearInterval(timer); //进度为100时清除定时器
+                }
+            }
             
+            function drawPolylines(rop) {
+                if(typeof(l1)!="undefined"){
+                    t = l1.splice(0, tl1[rop]);
+                    polyline1.setPath(t);
+                    l1 = t.concat(l1);
+                }
+                if(typeof(l2)!="undefined"){
+                    t = l2.splice(0, tl2[rop]);
+                    polyline2.setPath(t);
+                    l2 = t.concat(l2);
+                }
+                if(typeof(l3)!="undefined"){
+                    t = l3.splice(0, tl3[rop]);
+                    polyline3.setPath(t);
+                    l3 = t.concat(l3);
+                }
+            }
+
             function fitBounds() {
                 var lat1, lat2, lng1, lng2
                 for (var key in uavs){
@@ -146,9 +253,8 @@
                 else
                     return icons['default']
             }
-
-
         </script>
+
         <script async defer
             src="http://maps.google.cn/maps/api/js?key=AIzaSyBJ5eALQBAf0WCnFtQ4XnQQvHwIS_CDUoA&callback=initMap">
         </script>
