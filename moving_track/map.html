@@ -60,7 +60,7 @@
         </div>
 
 
-        <script src="./2-5.js"></script>
+        <script src="./6.js"></script>
         <script>
                 var scroll = document.getElementById('scroll');
                 var bar = document.getElementById('bar');
@@ -145,8 +145,17 @@
                 };
                 polyline3 = new google.maps.Polyline(polyOptions3);
 
-                map.setCenter({lat: 22.77121004112888, lng: 113.47471508545004});
-                map.setZoom(19);
+                var polyOptions4 = {
+                    strokeColor: 'yellow',
+                    // strokeOpacity: 1.0,
+                    // strokeWeight: 3,
+                    map: map,
+                };
+                polyline4 = new google.maps.Polyline(polyOptions4);
+
+                // map.setCenter({lat: 22.77121004112888, lng: 113.47471508545004});
+                map.setCenter({lat: 22.74977011287205, lng: 113.51462007926784});
+                map.setZoom(18);
 
                 window.timer = window.setInterval("go()",50); //设置定时器
 
@@ -181,6 +190,11 @@
                     t = l3.splice(0, tl3[rop]);
                     polyline3.setPath(t);
                     l3 = t.concat(l3);
+                }
+                if(typeof(l4)!="undefined"){
+                    t = l4.splice(0, tl3[rop]);
+                    polyline4.setPath(t);
+                    l4 = t.concat(l4);
                 }
             }
 

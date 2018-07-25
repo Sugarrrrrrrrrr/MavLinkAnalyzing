@@ -13,6 +13,7 @@ if __name__ == '__main__':
         l1 = eval(f_r.readline())
         l2 = eval(f_r.readline())
         l3 = eval(f_r.readline())
+        l4 = eval(f_r.readline())
         with open(file_name + '_[4]' + '.txt', 'wt') as f_w:
 
             f_w.write('l1 = [')
@@ -31,6 +32,13 @@ if __name__ == '__main__':
 
             f_w.write('l3 = [')
             for i in l3:
+                lat = i[2][0]
+                lng = i[2][1]
+                f_w.write('\t{lat: %f, lng: %f},' % (lat, lng))
+            f_w.write('];\n')
+
+            f_w.write('l4 = [')
+            for i in l4:
                 lat = i[2][0]
                 lng = i[2][1]
                 f_w.write('\t{lat: %f, lng: %f},' % (lat, lng))

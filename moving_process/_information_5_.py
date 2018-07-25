@@ -13,6 +13,7 @@ if __name__ == '__main__':
         l1 = eval(f_r.readline())
         l2 = eval(f_r.readline())
         l3 = eval(f_r.readline())
+        l4 = eval(f_r.readline())
         with open(file_name + '_[5]' + '.txt', 'wt') as f_w:
 
             if l1:
@@ -94,3 +95,29 @@ if __name__ == '__main__':
                     f_w.write('%d, ' % tl3[i])
                 tl3.append(len(l3) - 1)
                 f_w.write('%d];\n' % tl3[100])
+            if l4:
+                # l4
+                f_w.write('l4 = [')
+                for i in l4:
+                    lat = i[2][0]
+                    lng = i[2][1]
+                    f_w.write('\t{lat: %f, lng: %f},' % (lat, lng))
+                f_w.write('];\n')
+                # st4
+                st4 = l4[0][1]
+                f_w.write('st4 = %f;\n' % st4)
+                # et4
+                et4 = l4[-1][1]
+                f_w.write('et4 = %f;\n' % et4)
+                # tl4
+                tl4 = [0]
+                f_w.write('tl4 = [0, ')
+                j = 1
+                for i in range(1, 100):
+                    t = st4 + i * (et4 - st4) / 100
+                    while l4[j][1] <= t:
+                        j += 1
+                    tl4.append(j - 1)
+                    f_w.write('%d, ' % tl4[i])
+                tl4.append(len(l4) - 1)
+                f_w.write('%d];\n' % tl4[100])

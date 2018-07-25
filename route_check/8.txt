@@ -1,0 +1,9 @@
+Sat Jun 30 18:45:33 2018
+# Total entries: 1
+# Addr            Nhop            Flags Iface Expires
+  10.1.10.5       10.1.10.5             wlan1 2984
+
+Sat Jun 30 18:50:38 2018
+# Total entries: 0
+# Addr            Nhop            Flags Iface Expires
+

@@ -13,6 +13,7 @@ if __name__ == '__main__':
     l1 = []
     l2 = []
     l3 = []
+    l4 = []
     uav_id = None
     time = None
     xy = None
@@ -26,29 +27,36 @@ if __name__ == '__main__':
             elif line.startswith('M:'):
                 xy = eval(line[2:])
 
-                if uav_id == 3:
+                if uav_id == 2:
                     if len(l1) == 0:
                         delta_t = 0
                     else:
                         delta_t = time - l1[-1][1]
                     l1.append((uav_id, time, xy, delta_t))
-                elif uav_id == 5:
+                elif uav_id == 3:
                     if len(l2) == 0:
                         delta_t = 0
                     else:
                         delta_t = time - l2[-1][1]
                     l2.append((uav_id, time, xy, delta_t))
-                elif uav_id == 6:
+                elif uav_id == 5:
                     if len(l3) == 0:
                         delta_t = 0
                     else:
                         delta_t = time - l3[-1][1]
                     l3.append((uav_id, time, xy, delta_t))
+                elif uav_id == 0:
+                    if len(l4) == 0:
+                        delta_t = 0
+                    else:
+                        delta_t = time - l4[-1][1]
+                    l4.append((uav_id, time, xy, delta_t))
 
     with open(file_name + '_[3]' + '.txt', 'wt') as f:
         print(l1, file=f)
         print(l2, file=f)
         print(l3, file=f)
+        print(l4, file=f)
 
     with open(file_name + '_[3]' + '.txt', 'rt') as f:
         line = f.readline()
@@ -57,3 +65,5 @@ if __name__ == '__main__':
         l2 = eval(line)
         line = f.readline()
         l3 = eval(line)
+        line = f.readline()
+        l4 = eval(line)
