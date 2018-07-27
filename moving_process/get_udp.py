@@ -105,7 +105,7 @@ def get_udp_from_network(filename='192.168.1.0', ip_list=['192.168.1.4'], port=1
         yield (udp.data, src_addr)
 
 
-def get_udp_from_file(filename='../data/test.pcap', ip_list=['192.168.1.4'], port=14550):
+def get_udp_from_file(filename='../data/test.pcap', ip_list=['192.168.1.4'], port=14550, p_wl=None):
     with open(filename,'rb') as file:
         pcap = dpkt.pcap.Reader(file)
         # pcap.setfilter('udp port 14550')
@@ -114,7 +114,7 @@ def get_udp_from_file(filename='../data/test.pcap', ip_list=['192.168.1.4'], por
             #print ('Timestamp: ', str(datetime.datetime.utcfromtimestamp(ts)))
             #print ('Ethernet Frame: ', mac_addr(eth.src), ' --> ', mac_addr(eth.dst), ' | ', eth.type)
             line = 'T:' + str(ts)
-            WriteLine.get_p(None).write(line)
+            p_wl.write(line)
 
             if not isinstance(eth.data, dpkt.ip.IP):
                 #print ('Non IP Packet type not supported %s\n' %eth.data.__class__.__name__)

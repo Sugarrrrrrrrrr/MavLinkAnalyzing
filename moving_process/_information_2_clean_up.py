@@ -1,18 +1,9 @@
 
-if __name__ == '__main__':
 
-    with open('.cfg', 'r') as f:
-        for line in f:
-            if line.startswith('<FileName>'):
-                line = f.readline().strip()  # type: str
-                if line.endswith('.pcap'):
-                    line = line[0:-5]
-                file_name = line
-                break
-
+def do(file_name, IP=None, ports=None):
     p = None
-    with open(file_name + '_[1]' + '.txt', 'rt') as f_r:
-        with open(file_name + '_[2]' + '.txt', 'wt') as f_w:
+    with open('position_coors/' + file_name + '_[1]' + '.txt', 'rt') as f_r:
+        with open('position_coors/' + file_name + '_[2]' + '.txt', 'wt') as f_w:
             for line in f_r:
                 if line.startswith('U:'):
                     f_w.write(line)
@@ -24,3 +15,17 @@ if __name__ == '__main__':
                     if p != 't':
                         f_w.write(line)
                         p = 't'
+
+
+if __name__ == '__main__':
+
+    with open('.cfg', 'r') as f:
+        for line in f:
+            if line.startswith('<FileName>'):
+                line = f.readline().strip()  # type: str
+                if line.endswith('.pcap'):
+                    line = line[0:-5]
+                file_name = line
+                break
+
+    do(file_name)

@@ -1,15 +1,6 @@
-if __name__ == '__main__':
 
-    with open('.cfg', 'r') as f:
-        for line in f:
-            if line.startswith('<FileName>'):
-                line = f.readline().strip()  # type: str
-                if line.endswith('.pcap'):
-                    line = line[0:-5]
-                file_name = line
-                break
-
-    with open(file_name + '_[3]' + '.txt', 'rt') as f_r:
+def do(file_name, IP=None, ports=None):
+    with open('position_coors/' + file_name + '_[3]' + '.txt', 'rt') as f_r:
         l1 = eval(f_r.readline())
         l2 = eval(f_r.readline())
         l3 = eval(f_r.readline())
@@ -31,7 +22,7 @@ if __name__ == '__main__':
         st = min(begin_end_time_list)
         et = max(begin_end_time_list)
 
-        with open(file_name + '_[5]' + '.txt', 'wt') as f_w:
+        with open('position_coors/' + file_name + '_[5]' + '.txt', 'wt') as f_w:
 
             if l1:
                 # l1
@@ -146,4 +137,17 @@ if __name__ == '__main__':
                     f_w.write('%d, ' % tl4[i])
                 tl4.append(len(l4) - 1)
                 f_w.write('%d];\n' % tl4[100])
+
+if __name__ == '__main__':
+
+    with open('.cfg', 'r') as f:
+        for line in f:
+            if line.startswith('<FileName>'):
+                line = f.readline().strip()  # type: str
+                if line.endswith('.pcap'):
+                    line = line[0:-5]
+                file_name = line
+                break
+
+    do(file_name)
 

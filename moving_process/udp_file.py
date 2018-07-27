@@ -3,8 +3,8 @@ from socket import socket, AF_INET, SOCK_DGRAM
 
 
 class PcapFile(object):
-    def __init__(self, filename='../data/test.pcap', ip_list=['192.168.1.4'], port=14550):
-        self.guff = get_udp_from_file(filename=filename, ip_list=ip_list, port=port)
+    def __init__(self, filename='../data/test.pcap', ip_list=['192.168.1.4'], port=14550, p_wl=None):
+        self.guff = get_udp_from_file(filename=filename, ip_list=ip_list, port=port, p_wl=p_wl)
 
         self.buf = bytearray()
         self.buf_index = 0

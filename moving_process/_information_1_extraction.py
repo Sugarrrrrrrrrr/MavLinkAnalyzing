@@ -1,9 +1,11 @@
 import math
+from moving_process import mavutil
 
 x_pi = 3.14159265358979324 * 3000.0 / 180.0
 pi = 3.1415926535897932384626  # π
 a = 6378245.0  # 长半轴
 ee = 0.00669342162296594323  # 扁率
+
 
 def wgs84togcj02(lng, lat):
     """
@@ -25,6 +27,7 @@ def wgs84togcj02(lng, lat):
     mglat = lat + dlat
     mglng = lng + dlng
     return [mglng, mglat]
+
 
 def transformlat(lng, lat):
     ret = -100.0 + 2.0 * lng + 3.0 * lat + 0.2 * lat * lat + \
@@ -63,24 +66,20 @@ def out_of_china(lng, lat):
         return True
     return False
 
+
 p_WL = None
 
 
 class WriteLine:
     def __init__(self):
-        with open('.cfg', 'r') as f:
-            for line in f:
-                if line.startswith('<FileName>'):
-                    line = f.readline().strip()  # type: str
-                    if line.endswith('.pcap'):
-                        line = line[0:-5]
-                    file_name = line
-                    break
+        with open('temp.txt', 'r') as f:
+            file_to_write = f.readline()
 
-        self.file = open(file_name + '_[1]' + '.txt', 'at')
+        self.file = open(file_to_write + '_[1]' + '.txt', 'at')
 
     def __del__(self):
-        self.file.close()
+        # self.file.close()
+        pass
 
     def get_p(self):
         global p_WL
@@ -94,31 +93,24 @@ class WriteLine:
         self.file.flush()
 
 
-from moving_process import mavutil
+def do(file_name, IP, ports):
+    global p_WL
 
-if __name__ == '__main__':
-    
-    with open('.cfg', 'r') as f:
-        for line in f:
-            if line.startswith('<FileName>'):
-                line = f.readline().strip()     # type: str
-                if line.endswith('.pcap'):
-                    line = line[0:-5]
-                file_name = line
+    # new file
+    with open('position_coors/' + file_name + '_[1]' + '.txt', 'w') as f:
+        pass
 
-            if line.startswith('<IP>'):
-                line = f.readline().strip()     # type: str
-                IP = line
+    # file name to write in
+    with open('temp.txt', 'w') as f:
+        f.write('position_coors/' + file_name)
 
-            if line.startswith('<port>'):
-                line = f.readline().strip()     # type: str
-                ports = line.split()
+    # writeLine obj
+    p_WL = WriteLine()
 
     for port in ports:
-
-        mf = mavutil.mavlink_connection(file_name + '.pcap', ip_list=[IP], port=eval(port))
+        mf = mavutil.mavlink_connection('../data/' + file_name + '.pcap', ip_list=[IP], port=eval(port), p_wl=p_WL)
         line = 'U:' + port[4]
-        WriteLine.get_p(None).write(line)
+        p_WL.write(line)
 
         while True:
             try:
@@ -133,7 +125,30 @@ if __name__ == '__main__':
 
                 # write a line in txt_file
                 line = 'M:' + str((lat, lng))
-                WriteLine.get_p(None).write(line)
+                p_WL.write(line)
             except StopIteration as e:
                 break
 
+    p_WL = None
+
+
+if __name__ == '__main__':
+    
+    with open('.cfg', 'r') as f:
+        for line in f:
+            if line.startswith('<FileName>'):
+                line = f.readline().strip()     # type: str
+                file_names = line.split()
+
+            if line.startswith('<IP>'):
+                line = f.readline().strip()     # type: str
+                IP = line
+
+            if line.startswith('<port>'):
+                line = f.readline().strip()     # type: str
+                ports = line.split()
+
+    for file_name in file_names:
+        if file_name.endswith('.pcap'):
+            file_name = file_name[0:-5]
+            do(file_name, IP, ports)

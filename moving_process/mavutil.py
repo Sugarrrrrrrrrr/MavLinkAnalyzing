@@ -1136,7 +1136,7 @@ class mavpcapfile(mavfile):
     def __init__(self, filename, planner_format=None,
                  write=False, append=False,
                  robust_parsing=True, notimestamps=False, source_system=255, use_native=default_native,
-                 ip_list=['192.168.1.4'], port=14550):
+                 ip_list=['192.168.1.4'], port=14550, p_wl=None):
         self.filename = filename
         self.writeable = write
         self.robust_parsing = robust_parsing
@@ -1154,7 +1154,7 @@ class mavpcapfile(mavfile):
 
         sys.path.append('..')
         from moving_process.udp_file import PcapFile
-        self.f = PcapFile(filename=self.filename, ip_list=self.ip_list, port=self.port)
+        self.f = PcapFile(filename=self.filename, ip_list=self.ip_list, port=self.port, p_wl=p_wl)
         self.filesize = os.path.getsize(filename)
         self.percent = 0
         mavfile.__init__(self, None, filename, source_system=source_system, notimestamps=notimestamps, use_native=use_native)
@@ -1311,7 +1311,7 @@ def mavlink_connection(device, baud=115200, source_system=255,
                        robust_parsing=True, notimestamps=False, input=True,
                        dialect=None, autoreconnect=False, zero_time_base=False,
                        retries=3, use_native=default_native,
-                       ip_list=['192.168.1.4'], port=14550):
+                       ip_list=['192.168.1.4'], port=14550, p_wl=None):
     '''open a serial, UDP, TCP or file mavlink connection'''
     global mavfile_global
 
@@ -1352,7 +1352,7 @@ def mavlink_connection(device, baud=115200, source_system=255,
 
     if device.endswith('.pcap'):
         # support dataflash text logs
-        return mavpcapfile(filename=device, ip_list=ip_list, port=port)
+        return mavpcapfile(filename=device, ip_list=ip_list, port=port, p_wl=p_wl)
 
     # list of suffixes to prevent setting DOS paths as UDP sockets
     logsuffixes = ['mavlink', 'log', 'raw', 'tlog' ]
