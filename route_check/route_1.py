@@ -75,7 +75,7 @@ def do(filename, ip, port):
                 print(udp.data[8:])
                 input()
             if not compare(r, s):
-                route_list.append((ts, stol(s)))
+                route_list.append((-1, ts, stol(s)))
 
                 print(time.asctime(time.localtime(ts)), file=f)
                 print(s, file=f)

@@ -47,7 +47,7 @@
                 top: -8px;
             }
         </style>
-        <script src="./qwebchannel.js"></script>
+        <script src="old/qwebchannel.js"></script>
     </head>
     <body>
 
@@ -58,9 +58,29 @@
             <p id="rop"></p>
             <button id="btn_start" onclick="timer = window.setInterval('go()',50);">Start</button>
         </div>
+        <table border="1">
+            <tr>
+                <th style="color: red">2 号机</th>
+                <th style="color: blue">3 号机</th>
+                <th style="color: green">5 号机</th>
+                <th style="color: yellow">10 号机</th>
+            </tr>
+            <tr>
+                <td id="td_l1"> - </td>
+                <td id="td_l2"> - </td>
+                <td id="td_l3"> - </td>
+                <td id="td_l4"> - </td>
+            </tr>
+            <tr>
+                <td id="td_r1"> - </td>
+                <td id="td_r2"> - </td>
+                <td id="td_r3"> - </td>
+                <td id="td_r4"> - </td>
+            </tr>
+        </table>
 
 
-        <script src="./7.js"></script>
+        <script src="js/3.js"></script>
         <script>
                 var scroll = document.getElementById('scroll');
                 var bar = document.getElementById('bar');
@@ -154,7 +174,8 @@
                 polyline4 = new google.maps.Polyline(polyOptions4);
 
                 // map.setCenter({lat: 22.77121004112888, lng: 113.47471508545004});
-                map.setCenter({lat: 22.74977011287205, lng: 113.51462007926784});
+                // map.setCenter({lat: 22.74977011287205, lng: 113.51462007926784});
+                map.setCenter({lat: track_center_lat, lng: track_center_lng});
                 map.setZoom(18);
 
                 window.timer = window.setInterval("go()",50); //设置定时器
@@ -176,26 +197,39 @@
             }
             
             function drawPolylines(rop) {
-                if(typeof(l1)!="undefined"){
-                    t = l1.splice(0, tl1[rop]);
+                if(typeof(lp1)!="undefined"){
+                    t = lp1.splice(0, rop);
                     polyline1.setPath(t);
-                    l1 = t.concat(l1);
+                    lp1 = t.concat(lp1);
+
+                    document.getElementById('td_l1').innerText = ll1[rop].toString();
                 }
-                if(typeof(l2)!="undefined"){
-                    t = l2.splice(0, tl2[rop]);
+                if(typeof(lp2)!="undefined"){
+                    t = lp2.splice(0, rop);
                     polyline2.setPath(t);
-                    l2 = t.concat(l2);
+                    lp2 = t.concat(lp2);
+
+                    document.getElementById('td_l2').innerText = ll2[rop].toString();
                 }
-                if(typeof(l3)!="undefined"){
-                    t = l3.splice(0, tl3[rop]);
+                if(typeof(lp3)!="undefined"){
+                    t = lp3.splice(0, rop);
                     polyline3.setPath(t);
-                    l3 = t.concat(l3);
+                    lp3 = t.concat(lp3);
+
+                    document.getElementById('td_l3').innerText = ll3[rop].toString();
                 }
-                if(typeof(l4)!="undefined"){
-                    t = l4.splice(0, tl3[rop]);
+                if(typeof(lp4)!="undefined"){
+                    t = lp4.splice(0, rop);
                     polyline4.setPath(t);
-                    l4 = t.concat(l4);
+                    lp4 = t.concat(lp4);
+
+                    document.getElementById('td_l4').innerText = ll4[rop].toString();
                 }
+
+                document.getElementById('td_r1').innerText = lr[rop][0];
+                document.getElementById('td_r2').innerText = lr[rop][1];
+                document.getElementById('td_r3').innerText = lr[rop][2];
+                document.getElementById('td_r4').innerText = lr[rop][3];
             }
 
             function fitBounds() {
@@ -250,7 +284,7 @@
             }
 
             function createUav(uav_name, lat, lng) {
-                var icon = getIconByName(uav_name)
+                var icon = getIconByName(uav_name);
                 var uav = new google.maps.Marker({
                     position: {lat: lat, lng: lng},
                     map: map,
