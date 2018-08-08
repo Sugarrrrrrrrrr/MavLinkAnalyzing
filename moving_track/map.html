@@ -6,15 +6,17 @@
         <style>
             #map {
                 height: 800px;
-                width: 100%;
+                width: calc(100% - 550px);
+                float: left;
             }
             *{
                 margin: 0;
                 padding: 0;
             }
             .scroll{
-                margin:100px;
-                width: 500px;
+                margin-top:30px;
+                float: left;
+                width: 300px;
                 height: 5px;
                 background: #ccc;
                 position: relative;
@@ -38,32 +40,132 @@
             }
             #rop{
                 position: absolute;
-                left: 510px;
+                left:310px;
                 top: -8px;
             }
             #btn_start{
                 position: absolute;
-                left: 560px;
+                left: 360px;
                 top: -8px;
+                border-radius: 3px;
+                width: 70px;
+                height: 25px;
+                background: #00BCD4;
+                color: #fff;
+                border: none;
+                cursor: pointer;
             }
+            #btn_start:hover{
+            	background: #0a9eb1;
+            }
+            .map_right{
+            	float: left;
+            	width: 550px;
+            	height: auto;
+            }
+            .map_slider{
+            	height: 70px;
+            	width: 100%;
+            }
+            .map_slider_title{
+            	padding-left: 20px;
+            	width: 50px;
+            	float: left;
+            	margin-top: 20px;
+            }
+            .table_map1{
+            	border: 1px solid #ddd;
+            	width: 95%;
+            	margin: 0 auto;
+            	
+            }
+            .table_map1 tr td, .table_map1 tr th{
+            	border-bottom: 1px solid #ddd;
+            	border-right: 1px solid #ddd;
+            	padding: 10px 0px;
+            	text-align: center;
+            	font-size: 12px;
+            }
+             .table_map1 tr td:nth-last-child(1), .table_map1 tr th:nth-last-child(1){
+             	border-right: none;
+             }
+            .table_map1 tr:nth-last-child(1) td{
+             	border-bottom: none;
+             }
+             .table_map1 tr td{width: 100px;}
+             .map_time{
+             	 margin-top: 30px;
+             }
+             .time_p1{display: inline-block;margin-left: 20px;}
+            .mar_t{
+            	margin-top: 30px;
+            }
+            .time_s1{font-size: 14px; color: #999;}
+            .time_s2{margin-right: 40px;}
+           
+            .map_select{width: 100%;height: 35px;}
+             .dowebok { width: 200px;float: left;  }
+            .map_select_label{
+            	float: left;
+            	margin-left: 20px;
+            	margin-top: 8px;
+            }
+            .dowebok .combo-input{padding: 8px; }
+            .combo-dropdown{font-size: 12px;}
+            .select_option{
+            	float: left;	
+            }
+            .map_select_btn{float: left; border: none;background: #2196f3; margin-left:20px;border: 1px solid #2196f3; cursor: pointer; width: 80px;height: 30px;border-radius: 3px;color: #fff;}
+      		.color1{color: red; font-weight: bold;}
+      		.color2{color: blue;font-weight: bold;}
+      		.color3{color: green;font-weight: bold;}
+      		.color4{color: magenta;font-weight: bold;}
+      
+      
         </style>
-        <script src="old/qwebchannel.js"></script>
+        <link rel="stylesheet" type="text/css" href="js/combo.select.css"/>
     </head>
     <body>
 
         <div id="map"></div>
-        <div class="scroll" id="scroll">
+        <div class="map_right">
+        <div class="map_time"><p class="time_p1">起止：</p><span class="time_s1 time_s2">2018-05-15   10:11:11--10:14:15</span><p class="time_p1">时间：</p><span class="time_s1">2018-05-15 10:11</span></div>
+       	<div class="map_slider">
+       		<p class="map_slider_title">调整：</p>
+       		 <div class="scroll" id="scroll">
             <div class="bar" id="bar"></div>
             <div class="mask" id="mask"></div>
             <p id="rop"></p>
-            <button id="btn_start" onclick="timer = window.setInterval('go()',50);">Start</button>
+            <button id="btn_start" onclick="timers();">Start</button>
         </div>
-        <table border="1">
+       	</div>
+       	
+       	<div class="map_select">
+       		<label class="map_select_label ">选择：</label>
+       	<div class="dowebok ">
+			<select class="select_option" id="select_option">
+				<option value="1">1</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="8">8</option>
+				<option value="10">10</option>
+				<option value="11">11</option>
+				<option value="12">12</option>
+				<option value="13">13</option>
+				<option value="14">14</option>
+				<option value="15">15</option>
+			</select>
+		</div>
+		<button class="map_select_btn" id="btn_map_ok">确定</button>
+		</div>
+        <table   cellspacing="0" cellpadding="0"   border="0" class="table_map1">
             <tr>
-                <th style="color: red">2 号机</th>
-                <th style="color: blue">3 号机</th>
-                <th style="color: green">5 号机</th>
-                <th style="color: yellow">10 号机</th>
+                <th class="color1">2 号机</th>
+                <th class="color2">3 号机</th>
+                <th class="color3">5 号机</th>
+                <th class="color4">10 号机</th>
             </tr>
             <tr>
                 <td id="td_l1"> - </td>
@@ -79,13 +181,59 @@
             </tr>
         </table>
 
-
-        <script src="js/3.js"></script>
+        <table   cellspacing="0" cellpadding="0"   border="0"  class="table_map1 mar_t">
+            <tr>
+                <th></th>
+                <th class="color1">2 号机</th>
+                <th class="color2">3 号机</th>
+                <th class="color3">5 号机</th>
+                <th class="color4">10 号机</th>
+            </tr>
+            <tr>
+                <td class="color1">2 号机</td>
+                <td id="td_d2h"> td_d2h </td>
+                <td> - </td>
+                <td> - </td>
+                <td> - </td>
+            </tr>
+            <tr>
+                <td class="color2">3 号机</td>
+                <td id="td_d23"> td_d23 </td>
+                <td id="td_d3h"> td_d3h </td>
+                <td> - </td>
+                <td> - </td>
+            </tr>
+            <tr>
+                <td class="color3">5 号机</td>
+                <td id="td_d25"> td_d25 </td>
+                <td id="td_d35"> td_d35 </td>
+                <td id="td_d5h"> td_d5h </td>
+                <td> - </td>
+            </tr>
+            <tr>
+                <td class="color4">10 号机</td>
+                <td id="td_d20"> td_d20 </td>
+                <td id="td_d30"> td_d30 </td>
+                <td id="td_d50"> td_d50 </td>
+                <td id="td_d0h"> td_d5h </td>
+            </tr>
+        </table>
+</div>
+</body>
+ 
+        <script src="js/jquery-1.11.3.min.js"></script>
+        <script src="js/3.js" id="script_id"></script>
+        <script src="js/jquery.combo.select.js"></script>
         <script>
+        	$('select').comboSelect();
                 var scroll = document.getElementById('scroll');
                 var bar = document.getElementById('bar');
                 var mask = document.getElementById('mask');
                 var ptxt = document.getElementById('rop');
+                var btn_ok = document.getElementById("btn_map_ok")
+                var osele = document.getElementById("select_option")
+                var script_id = document.getElementById("script_id")
+                
                 var barleft = 0;
                 bar.onmousedown = function(event){
                       var event = event || window.event;
@@ -112,12 +260,11 @@
                 document.onmouseup = function(){
                     document.onmousemove = null; //弹起鼠标不做任何操作
                 }
-        </script>
-        <script>
+       
             var map;
 
             window.onload = function () {
-                new QWebChannel(qt.webChannelTransport, function(channel) {
+					 new QWebChannel(qt.webChannelTransport, function(channel) {
                     window.bridge = channel.objects.bridge;
                     bridge.signal_test.connect(function () {
                         alert('sendText');
@@ -127,8 +274,7 @@
                         moveUav(uav_name, lat, lng)
                     });
                 });
-            };
-
+				}
             function initMap() {
                 var lat = 39.9651391731;
                 var lng = 116.3420835823;
@@ -166,7 +312,7 @@
                 polyline3 = new google.maps.Polyline(polyOptions3);
 
                 var polyOptions4 = {
-                    strokeColor: 'yellow',
+                    strokeColor: 'magenta',
                     // strokeOpacity: 1.0,
                     // strokeWeight: 3,
                     map: map,
@@ -177,9 +323,33 @@
                 // map.setCenter({lat: 22.74977011287205, lng: 113.51462007926784});
                 map.setCenter({lat: track_center_lat, lng: track_center_lng});
                 map.setZoom(18);
+                document.getElementsByClassName("time_s1 time_s2")[0].innerText = time_st_to_display;
+                //window.timer = window.setInterval("go()",50); //设置定时器
 
-                window.timer = window.setInterval("go()",50); //设置定时器
+                document.getElementById('td_l1').innerText = "-";
+                document.getElementById('td_l2').innerText = "-";
+                document.getElementById('td_l3').innerText = "-";
+                document.getElementById('td_l4').innerText = "-";
+                document.getElementById('td_r1').innerText = "-";
+                document.getElementById('td_r2').innerText = "-";
+                document.getElementById('td_r3').innerText = "-";
+                document.getElementById('td_r4').innerText = "-";
+                document.getElementById('td_d2h').innerText = "-";
+                document.getElementById('td_d23').innerText = "-";
+                document.getElementById('td_d3h').innerText = "-";
+                document.getElementById('td_d25').innerText = "-";
+                document.getElementById('td_d35').innerText = "-";
+                document.getElementById('td_d5h').innerText = "-";
+                document.getElementById('td_d20').innerText = "-";
+                document.getElementById('td_d30').innerText = "-";
+                document.getElementById('td_d50').innerText = "-";
+                document.getElementById('td_d0h').innerText = "-";
 
+                timers()
+
+            }
+            function timers(){
+            	timer = window.setInterval('go()',50);
             }
 
             function go(){
@@ -195,7 +365,18 @@
                     window.clearInterval(timer); //进度为100时清除定时器
                 }
             }
-            
+
+            function toRad(d) {  return d * Math.PI / 180; }
+            function getDisance(lat1, lng1, lat2, lng2) {
+                var dis = 0;
+                var radLat1 = toRad(lat1);
+                var radLat2 = toRad(lat2);
+                var deltaLat = radLat1 - radLat2;
+                var deltaLng = toRad(lng1) - toRad(lng2);
+                var dis = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(deltaLat / 2), 2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(deltaLng / 2), 2)));
+                return dis * 6378137;
+            }
+
             function drawPolylines(rop) {
                 if(typeof(lp1)!="undefined"){
                     t = lp1.splice(0, rop);
@@ -203,6 +384,20 @@
                     lp1 = t.concat(lp1);
 
                     document.getElementById('td_l1').innerText = ll1[rop].toString();
+                    document.getElementById('td_d2h').innerText = getDisance(lp1[rop].lat, lp1[rop].lng, lp1[0].lat, lp1[0].lng).toFixed(2);
+
+                    if(typeof(lp2)!="undefined"){
+                        document.getElementById('td_d23').innerText = getDisance(lp1[rop].lat, lp1[rop].lng, lp2[rop].lat, lp2[rop].lng).toFixed(2);
+                    }
+
+                    if(typeof(lp3)!="undefined"){
+                        document.getElementById('td_d25').innerText = getDisance(lp1[rop].lat, lp1[rop].lng, lp3[rop].lat, lp3[rop].lng).toFixed(2);
+                    }
+
+                    if(typeof(lp4)!="undefined"){
+                        document.getElementById('td_d20').innerText = getDisance(lp1[rop].lat, lp1[rop].lng, lp4[rop].lat, lp4[rop].lng).toFixed(2);
+                    }
+
                 }
                 if(typeof(lp2)!="undefined"){
                     t = lp2.splice(0, rop);
@@ -210,6 +405,15 @@
                     lp2 = t.concat(lp2);
 
                     document.getElementById('td_l2').innerText = ll2[rop].toString();
+                    document.getElementById('td_d3h').innerText = getDisance(lp2[rop].lat, lp2[rop].lng, lp2[0].lat, lp2[0].lng).toFixed(2);
+
+                    if(typeof(lp3)!="undefined"){
+                        document.getElementById('td_d35').innerText = getDisance(lp2[rop].lat, lp2[rop].lng, lp3[rop].lat, lp3[rop].lng).toFixed(2);
+                    }
+
+                    if(typeof(lp4)!="undefined"){
+                        document.getElementById('td_d30').innerText = getDisance(lp2[rop].lat, lp2[rop].lng, lp4[rop].lat, lp4[rop].lng).toFixed(2);
+                    }
                 }
                 if(typeof(lp3)!="undefined"){
                     t = lp3.splice(0, rop);
@@ -217,6 +421,11 @@
                     lp3 = t.concat(lp3);
 
                     document.getElementById('td_l3').innerText = ll3[rop].toString();
+                    document.getElementById('td_d5h').innerText = getDisance(lp3[rop].lat, lp3[rop].lng, lp3[0].lat, lp3[0].lng).toFixed(2);
+
+                    if(typeof(lp4)!="undefined"){
+                        document.getElementById('td_d50').innerText = getDisance(lp3[rop].lat, lp3[rop].lng, lp4[rop].lat, lp4[rop].lng).toFixed(2);
+                    }
                 }
                 if(typeof(lp4)!="undefined"){
                     t = lp4.splice(0, rop);
@@ -224,12 +433,15 @@
                     lp4 = t.concat(lp4);
 
                     document.getElementById('td_l4').innerText = ll4[rop].toString();
+                    document.getElementById('td_d0h').innerText = getDisance(lp4[rop].lat, lp4[rop].lng, lp4[0].lat, lp4[0].lng).toFixed(2);
                 }
 
                 document.getElementById('td_r1').innerText = lr[rop][0];
                 document.getElementById('td_r2').innerText = lr[rop][1];
                 document.getElementById('td_r3').innerText = lr[rop][2];
                 document.getElementById('td_r4').innerText = lr[rop][3];
+
+                document.getElementsByClassName("time_s1")[1].innerText = time_to_display[rop];
             }
 
             function fitBounds() {
@@ -301,10 +513,59 @@
                 else
                     return icons['default']
             }
+ 			//点击确定
+			 btn_ok.onclick=function(){
+				$("#script_ids,#script_id").remove();
+
+                // delete
+                delete time_st_to_display;
+				if(typeof(lp1)!="undefined"){
+                     delete lp1;
+                     delete ll1;
+                 }
+                 if(typeof(lp2)!="undefined"){
+                     delete lp2;
+                     delete ll2;
+                 }
+                 if(typeof(lp3)!="undefined"){
+                     delete lp3;
+                     delete ll3;
+                 }
+                 if(typeof(lp4)!="undefined"){
+                     delete lp4;
+                     delete ll4;
+                 }
+				 
+                 dynamicLoadJs("js/"+osele.value+".js");
+                 bar.style.left = 0;
+                 mask.style.width=0;
+				setTimeout(function(){
+                 initMap();
+				},500)
+ 			}
+             
+       
+           function dynamicLoadJs(url) {
+		        var head = document.getElementsByTagName('head')[0];
+		        var script = document.createElement('script');
+		        script.type = 'text/javascript';
+		        script.src = url;
+		        script.id = "script_ids";
+		 
+		            script.onload = script.onreadystatechange = function () {
+		                if (!this.readyState || this.readyState === "loaded" || this.readyState === "complete"){
+		                    
+		                    script.onload = script.onreadystatechange = null;
+		                }
+		            };
+		         
+		        head.appendChild(script);
+    }
+            
         </script>
 
         <script async defer
             src="http://maps.google.cn/maps/api/js?key=AIzaSyBJ5eALQBAf0WCnFtQ4XnQQvHwIS_CDUoA&callback=initMap">
         </script>
-    </body>
+    
 </html>
