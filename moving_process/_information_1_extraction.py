@@ -123,8 +123,10 @@ def do(file_name, IP, ports):
                 lng = lng_lat[0]
                 lat = lng_lat[1]
 
+                alt = m.alt/1000
+
                 # write a line in txt_file
-                line = 'M:' + str((lat, lng))
+                line = 'M:' + str((lat, lng, alt))
                 p_WL.write(line)
             except StopIteration as e:
                 break

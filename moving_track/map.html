@@ -156,24 +156,39 @@
 				<option value="13">13</option>
 				<option value="14">14</option>
 				<option value="15">15</option>
+				<option value="21">21</option>
+				<option value="22">22</option>
+				<option value="23">23</option>
+				<option value="24">24</option>
+				<option value="25">25</option>
 			</select>
 		</div>
 		<button class="map_select_btn" id="btn_map_ok">确定</button>
 		</div>
         <table   cellspacing="0" cellpadding="0"   border="0" class="table_map1">
             <tr>
+                <th></th>
                 <th class="color1">2 号机</th>
                 <th class="color2">3 号机</th>
                 <th class="color3">5 号机</th>
                 <th class="color4">10 号机</th>
             </tr>
             <tr>
+                <td>高度</td>
+                <td id="td_h1"> - </td>
+                <td id="td_h2"> - </td>
+                <td id="td_h3"> - </td>
+                <td id="td_h4"> - </td>
+            </tr>
+            <tr>
+                <td>丢包</td>
                 <td id="td_l1"> - </td>
                 <td id="td_l2"> - </td>
                 <td id="td_l3"> - </td>
                 <td id="td_l4"> - </td>
             </tr>
             <tr>
+                <td>路由</td>
                 <td id="td_r1"> - </td>
                 <td id="td_r2"> - </td>
                 <td id="td_r3"> - </td>
@@ -222,7 +237,7 @@
 </body>
  
         <script src="js/jquery-1.11.3.min.js"></script>
-        <script src="js/3.js" id="script_id"></script>
+        <script src="js/25.js" id="script_id"></script>
         <script src="js/jquery.combo.select.js"></script>
         <script>
         	$('select').comboSelect();
@@ -330,6 +345,10 @@
                 document.getElementById('td_l2').innerText = "-";
                 document.getElementById('td_l3').innerText = "-";
                 document.getElementById('td_l4').innerText = "-";
+                document.getElementById('td_h1').innerText = "-";
+                document.getElementById('td_h2').innerText = "-";
+                document.getElementById('td_h3').innerText = "-";
+                document.getElementById('td_h4').innerText = "-";
                 document.getElementById('td_r1').innerText = "-";
                 document.getElementById('td_r2').innerText = "-";
                 document.getElementById('td_r3').innerText = "-";
@@ -384,6 +403,7 @@
                     lp1 = t.concat(lp1);
 
                     document.getElementById('td_l1').innerText = ll1[rop].toString();
+                    document.getElementById('td_h1').innerText = lh1[rop].toString();
                     document.getElementById('td_d2h').innerText = getDisance(lp1[rop].lat, lp1[rop].lng, lp1[0].lat, lp1[0].lng).toFixed(2);
 
                     if(typeof(lp2)!="undefined"){
@@ -405,6 +425,7 @@
                     lp2 = t.concat(lp2);
 
                     document.getElementById('td_l2').innerText = ll2[rop].toString();
+                    document.getElementById('td_h2').innerText = lh2[rop].toString();
                     document.getElementById('td_d3h').innerText = getDisance(lp2[rop].lat, lp2[rop].lng, lp2[0].lat, lp2[0].lng).toFixed(2);
 
                     if(typeof(lp3)!="undefined"){
@@ -421,6 +442,7 @@
                     lp3 = t.concat(lp3);
 
                     document.getElementById('td_l3').innerText = ll3[rop].toString();
+                    document.getElementById('td_h3').innerText = lh3[rop].toString();
                     document.getElementById('td_d5h').innerText = getDisance(lp3[rop].lat, lp3[rop].lng, lp3[0].lat, lp3[0].lng).toFixed(2);
 
                     if(typeof(lp4)!="undefined"){
@@ -433,6 +455,7 @@
                     lp4 = t.concat(lp4);
 
                     document.getElementById('td_l4').innerText = ll4[rop].toString();
+                    document.getElementById('td_h4').innerText = lh4[rop].toString();
                     document.getElementById('td_d0h').innerText = getDisance(lp4[rop].lat, lp4[rop].lng, lp4[0].lat, lp4[0].lng).toFixed(2);
                 }
 

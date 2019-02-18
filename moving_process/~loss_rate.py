@@ -108,7 +108,7 @@ def do_3(file_name, IP=None, ports=None):
                     else:
                         delta_t = time - l3[-1][1]
                     l3.append((uav_id, time, xy, delta_t))
-                elif uav_id == 0:
+                elif uav_id == 0 or uav_id == 6:
                     if len(l4) == 0:
                         delta_t = 0
                     else:
